@@ -57,7 +57,7 @@ def predict(prompt, negative_prompt, width, height, guidance_scale, prior_steps,
 
     decoder = StableCascadeDecoderPipeline.from_pretrained("stabilityai/stable-cascade",  torch_dtype=torch.float16).to(device)
     decoder_output = decoder(
-        image_embeddings=prior_output.image_embeddings.to(torch.float16)
+        image_embeddings=prior_output.image_embeddings.to(torch.float16),
         prompt=prompt,
         negative_prompt=negative_prompt,
         guidance_scale=0.0,
