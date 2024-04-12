@@ -57,7 +57,7 @@ def predict(prompt, negative_prompt, width, height, guidance_scale, prior_steps,
 
     decoder = StableCascadeDecoderPipeline.from_pretrained("stabilityai/stable-cascade",  torch_dtype=torch.float16).to(device)
     decoder_output = decoder(
-        image_embeddings=prior_output.image_embeddings.half(),
+        image_embeddings=prior_output.image_embeddings.to(torch.float16)
         prompt=prompt,
         negative_prompt=negative_prompt,
         guidance_scale=0.0,
@@ -87,8 +87,8 @@ def on_ui_tabs():
             with gr.Column():
                 prompt = gr.Textbox(label='Prompt', placeholder='Enter a prompt here...', default='')
                 negative_prompt = gr.Textbox(label='Negative Prompt', placeholder='')
-                width = gr.Slider(label='Width', minimum=16, maximum=4096, step=8, value=1024)
-                height = gr.Slider(label='Height', minimum=16, maximum=4096, step=8, value=1024)
+                width = gr.Slider(label='Width', minimum=256, maximum=4096, step=256, value=1024)
+                height = gr.Slider(label='Height', minimum=256, maximum=4096, step=256, value=1024)
                 guidence_scale = gr.Slider(label='CFG', minimum=1, maximum=32, step=0.5, value=4.0)
                 prior_step = gr.Slider(label='Steps(Prior)', minimum=1, maximum=60, step=1, value=20)
                 decoder_steps = gr.Slider(label='Steps(Decoder)', minimum=1, maximum=60, step=1, value=10)
